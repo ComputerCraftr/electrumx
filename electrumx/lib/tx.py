@@ -1203,7 +1203,7 @@ class DeserializerXaya(DeserializerSegWit, DeserializerAuxPow):
         return self._read_nbytes(end - start)
 
 
-class DeserializerSimplicity(Deserializer):
+class DeserializerSimplicity(DeserializerSegWit):
     SIMPLICITY_TX_VERSION = 3
 
     def _get_version(self):
@@ -1221,12 +1221,7 @@ class DeserializerSimplicity(Deserializer):
                 self._read_le_uint32(),  # locktime
             )
         else:
-            return Tx(
-                self._read_le_int32(),  # version
-                self._read_inputs(),    # inputs
-                self._read_outputs(),   # outputs
-                self._read_le_uint32()  # locktime
-            )
+            return self._read_tx_parts()[0]
 
 
 class DeserializerPrimecoin(Deserializer):
